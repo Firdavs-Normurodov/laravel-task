@@ -13,36 +13,39 @@
                         <!-- This is an example component -->
                         <h2 class=" text-blue-500 font-bold text-xl">Received Applications</h2>
                         <div class=' mt-8'>
+                            @foreach ($applications as $application)
+                                
+                            
                             <div class="rounded-xl border p-5 mt-6 shadow-md w-9/12 bg-white">
                                 <div class="flex w-full items-center justify-between border-b pb-3">
                                     <div class="flex items-center space-x-3">
-                                        <div
-                                            class="h-8 w-8 rounded-full bg-slate-400 bg-[url('https://i.pravatar.cc/32')]">
+                                        <div class="h-8 w-8 rounded-full bg-blue-400 flex justify-center items-center">
+                                            {{$application->user->name[0]}}
                                         </div>
-                                        <div class="text-lg font-bold text-slate-700">Joe Smith</div>
+                                        <div class="text-lg font-bold text-slate-700">{{$application->user->name}}</div>
                                     </div>
                                     <div class="flex items-center space-x-8">
                                         <button
-                                            class="rounded-2xl border bg-neutral-100 px-3 py-1 text-xs text-neutral-600 font-semibold">id:
-                                            1</button>
-                                        <div class="text-xs text-neutral-500">2024-08-11 10:11</div>
+                                            class="rounded-2xl border bg-neutral-100 
+                                            px-3 py-1 text-xs text-neutral-600 font-semibold">
+                                            # {{$application->id}}
+                                        </button>
+                                        <div class="text-xs text-neutral-500">{{$application->created_at}}</div>
                                     </div>
                                 </div>
 
                                 <div class="mt-4 mb-3">
-                                    <div class="mb-3 text-xl text-slate-600  font-bold">Nulla sed leo tempus, feugiat
-                                        velit vel, rhoncus
-                                        neque?</div>
-                                    <div class="text-sm text-neutral-600">Aliquam a tristique sapien, nec bibendum urna.
-                                        Maecenas convallis dignissim turpis, non suscipit mauris interdum at. Morbi sed
-                                        gravida nisl, a pharetra nulla. Etiam tincidunt turpis leo, ut mollis ipsum
-                                        consectetur quis. Etiam faucibus est risus, ac condimentum mauris consequat nec.
-                                        Curabitur eget feugiat massa</div>
+                                    <div class="mb-3 text-xl text-slate-600  font-bold">
+                                        {{$application->subject}}    
+                                    </div>
+                                    <div class="text-sm text-neutral-600">
+                                        {{$application->message}} 
+                                    </div>
                                 </div>
 
                                 <div>
                                     <div class="flex items-center justify-between text-slate-500">
-                                        user@gmail.com
+                                       {{$application->user->email}} 
                                         {{-- <div class="flex space-x-4 md:space-x-8">
                                             <div
                                                 class="flex cursor-pointer items-center transition hover:text-slate-600">
@@ -68,40 +71,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="rounded-xl border p-5 mt-6 shadow-md w-9/12 bg-white">
-                                <div class="flex w-full items-center justify-between border-b pb-3">
-                                    <div class="flex items-center space-x-3">
-                                        <div
-                                            class="h-8 w-8 rounded-full bg-slate-400 bg-[url('https://i.pravatar.cc/32')]">
-                                        </div>
-                                        <div class="text-lg font-bold text-slate-700">Joe Smith</div>
-                                    </div>
-                                    <div class="flex items-center space-x-8">
-                                        <button
-                                            class="rounded-2xl border bg-neutral-100 px-3 py-1 text-xs text-neutral-600 font-semibold">id:
-                                            1</button>
-                                        <div class="text-xs text-neutral-500">2024-08-11 10:11</div>
-                                    </div>
-                                </div>
-
-                                <div class="mt-4 mb-3">
-                                    <div class="mb-3 text-xl text-slate-600  font-bold">Nulla sed leo tempus, feugiat
-                                        velit vel, rhoncus
-                                        neque?</div>
-                                    <div class="text-sm text-neutral-600">Aliquam a tristique sapien, nec bibendum urna.
-                                        Maecenas convallis dignissim turpis, non suscipit mauris interdum at. Morbi sed
-                                        gravida nisl, a pharetra nulla. Etiam tincidunt turpis leo, ut mollis ipsum
-                                        consectetur quis. Etiam faucibus est risus, ac condimentum mauris consequat nec.
-                                        Curabitur eget feugiat massa</div>
-                                </div>
-
-                                <div>
-                                    <div class="flex items-center justify-between text-slate-500">
-                                        user@gmail.com
-
-                                    </div>
-                                </div>
+                            @endforeach()
+                            <div class=" mt-5">
+                                {{$applications->links()}}
                             </div>
+                            
                         </div>
                     @elseif (auth()->user()->role->name == 'client')
                         <!-- component -->
@@ -109,26 +83,39 @@
                             <div class='w-full max-w-lg px-10 py-8 mx-auto bg-white rounded-lg shadow-xl'>
                                 <div class='max-w-md mx-auto space-y-6'>
 
-                                    <form action="" method="POST" enctype="multipart/form-data">
+                                    <form action="{{route('applications.store')}}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <h2 class="text-2xl font-bold text-slate-600">Submit your application</h2>
 
                                         <hr class="my-6">
                                         <label
                                             class="uppercase text-sm font-bold opacity-70 text-slate-600">Subject</label>
-                                        <input type="text"
-                                            class="p-3 mt-2 mb-4 w-full bg-slate-200 rounded border-2 text-slate-950 border-slate-200 focus:border-slate-600 focus:outline-none">
+                                        <input type="text" 
+                                            name="subject"
+                                            class="p-3 mt-2 mb-4 w-full
+                                                bg-slate-200 rounded border-2
+                                                text-slate-950 border-slate-200 
+                                                focus:border-slate-600 focus:outline-none">
                                         <label
                                             class="uppercase text-sm font-bold opacity-70 text-slate-600">Message</label>
-                                        <textarea rows="4"   type="text" class="p-3 mt-2 mb-4 w-full text-slate-950 bg-slate-200 rounded">
+                                        <textarea  name="message" rows="4" type="text" class="p-3 mt-2 mb-4 w-full
+                                                 text-slate-950 bg-slate-200 rounded">
                                         </textarea>
                                         <label
-                                            class="uppercase text-sm font-bold opacity-70 text-slate-600">File</label>
+                                            class="uppercase text-sm font-bold opacity-70
+                                             text-slate-600">
+                                             File
+                                        </label>
                                         <input type="file"
-                                            class="p-3 mt-2 mb-4 w-full bg-slate-200 rounded border-2 text-slate-950 border-slate-200 focus:border-slate-600 focus:outline-none">
+                                            name="file"
+                                            class="p-3 mt-2 mb-4 w-full bg-slate-200 
+                                            rounded border-2 text-slate-950 border-slate-200 
+                                            focus:border-slate-600 focus:outline-none">
 
                                         <input type="submit"
-                                            class="py-3 px-6 my-2 bg-emerald-500 text-white font-medium rounded hover:bg-indigo-500 cursor-pointer ease-in-out duration-300"
+                                            class="py-3 px-6 my-2 bg-emerald-500 
+                                            text-white font-medium rounded hover:bg-indigo-500 
+                                            cursor-pointer ease-in-out duration-300"
                                             value="Send">
                                     </form>
 
