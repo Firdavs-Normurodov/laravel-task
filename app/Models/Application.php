@@ -14,13 +14,8 @@ class Application extends Model
         'message',
         'file_url'
     ];
-    // protected $guarded = [];
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-    public function applications()
-    {
-        return $this->hasMany(Application::class);
     }
 }
