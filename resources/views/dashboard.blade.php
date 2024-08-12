@@ -14,39 +14,39 @@
                         <h2 class=" text-blue-500 font-bold text-xl">Received Applications</h2>
                         <div class=' mt-8'>
                             @foreach ($applications as $application)
-                                
-                            
-                            <div class="rounded-xl border p-5 mt-6 shadow-md w-9/12 bg-white">
-                                <div class="flex w-full items-center justify-between border-b pb-3">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="h-8 w-8 rounded-full bg-blue-400 flex justify-center items-center">
-                                            {{$application->user->name[0]}}
+                                <div class="rounded-xl border p-5 mt-6 shadow-md w-9/12 bg-white">
+                                    <div class="flex w-full items-center justify-between border-b pb-3">
+                                        <div class="flex items-center space-x-3">
+                                            <div
+                                                class="h-8 w-8 rounded-full bg-blue-400 flex justify-center items-center">
+                                                {{ $application->user->name[0] }}
+                                            </div>
+                                            <div class="text-lg font-bold text-slate-700">{{ $application->user->name }}
+                                            </div>
                                         </div>
-                                        <div class="text-lg font-bold text-slate-700">{{$application->user->name}}</div>
-                                    </div>
-                                    <div class="flex items-center space-x-8">
-                                        <button
-                                            class="rounded-2xl border bg-neutral-100 
+                                        <div class="flex items-center space-x-8">
+                                            <button
+                                                class="rounded-2xl border bg-neutral-100 
                                             px-3 py-1 text-xs text-neutral-600 font-semibold">
-                                            # {{$application->id}}
-                                        </button>
-                                        <div class="text-xs text-neutral-500">{{$application->created_at}}</div>
+                                                # {{ $application->id }}
+                                            </button>
+                                            <div class="text-xs text-neutral-500">{{ $application->created_at }}</div>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="mt-4 mb-3">
-                                    <div class="mb-3 text-xl text-slate-600  font-bold">
-                                        {{$application->subject}}    
+                                    <div class="mt-4 mb-3">
+                                        <div class="mb-3 text-xl text-slate-600  font-bold">
+                                            {{ $application->subject }}
+                                        </div>
+                                        <div class="text-sm text-neutral-600">
+                                            {{ $application->message }}
+                                        </div>
                                     </div>
-                                    <div class="text-sm text-neutral-600">
-                                        {{$application->message}} 
-                                    </div>
-                                </div>
 
-                                <div>
-                                    <div class="flex items-center justify-between text-slate-500">
-                                       {{$application->user->email}} 
-                                        {{-- <div class="flex space-x-4 md:space-x-8">
+                                    <div>
+                                        <div class="flex items-center justify-between text-slate-500">
+                                            {{ $application->user->email }}
+                                            {{-- <div class="flex space-x-4 md:space-x-8">
                                             <div
                                                 class="flex cursor-pointer items-center transition hover:text-slate-600">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="mr-1.5 h-5 w-5"
@@ -68,46 +68,111 @@
                                                 <span>4</span>
                                             </div>
                                         </div> --}}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             @endforeach()
                             <div class=" mt-5">
-                                {{$applications->links()}}
+                                {{ $applications->links() }}
                             </div>
-                            
+
                         </div>
                     @elseif (auth()->user()->role->name == 'client')
                         <!-- component -->
                         <div class='flex items-center  '>
                             <div class='w-full max-w-lg px-10 py-8 mx-auto bg-white rounded-lg shadow-xl'>
-                                <div class='max-w-md mx-auto space-y-6'>
+                                @if (session()->has('error'))
+                                    <div class="flex bg-blue-100 rounded-lg p-4 mb-4 text-sm text-blue-700"
+                                        role="alert">
 
-                                    <form action="{{route('applications.store')}}" method="POST" enctype="multipart/form-data">
+                                        <svg class="w-5 h-5 inline mr-3" fill="currentColor" viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <div>
+                                            <span class="font-medium">! </span> {{ session()->get('error') }}
+                                        </div>
+                                    </div>
+                                @endif
+                                <div class='max-w-md mx-auto space-y-6'>
+                                    <form action="{{ route('applications.store') }}" method="POST"
+                                        enctype="multipart/form-data">
                                         @csrf
+
+                                        {{-- @if ($errors->any())
+                                            <ul class="mb-4 text-sm text-red-600">
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        @endif --}}
                                         <h2 class="text-2xl font-bold text-slate-600">Submit your application</h2>
 
                                         <hr class="my-6">
+                                        @error('subject')
+                                            <div class="flex bg-red-100 rounded-lg p-4 mb-4 text-sm text-red-700"
+                                                role="alert">
+                                                <svg class="w-5 h-5 inline mr-3" fill="currentColor" viewBox="0 0 20 20"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd"
+                                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                                        clip-rule="evenodd"></path>
+                                                </svg>
+                                                <div>
+                                                    <span class="font-medium">{{ $message }}</span> !
+                                                </div>
+                                            </div>
+                                        @enderror
                                         <label
                                             class="uppercase text-sm font-bold opacity-70 text-slate-600">Subject</label>
-                                        <input type="text" 
-                                            name="subject"
+                                        <input type="text" name="subject"
                                             class="p-3 mt-2 mb-4 w-full
                                                 bg-slate-200 rounded border-2
                                                 text-slate-950 border-slate-200 
                                                 focus:border-slate-600 focus:outline-none">
+
+                                        @error('message')
+                                            <div class="flex bg-red-100 rounded-lg p-4 mb-4 text-sm text-red-700"
+                                                role="alert">
+                                                <svg class="w-5 h-5 inline mr-3" fill="currentColor" viewBox="0 0 20 20"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd"
+                                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                                        clip-rule="evenodd"></path>
+                                                </svg>
+                                                <div>
+                                                    <span class="font-medium">{{ $message }}</span> !
+                                                </div>
+                                            </div>
+                                        @enderror
                                         <label
                                             class="uppercase text-sm font-bold opacity-70 text-slate-600">Message</label>
-                                        <textarea  name="message" rows="4" type="text" class="p-3 mt-2 mb-4 w-full
+                                        <textarea name="message" rows="4" type="text"
+                                            class="p-3 mt-2 mb-4 w-full
                                                  text-slate-950 bg-slate-200 rounded">
                                         </textarea>
+                                        @error('file')
+                                            <div class="flex bg-red-100 rounded-lg p-4 mb-4 text-sm text-red-700"
+                                                role="alert">
+                                                <svg class="w-5 h-5 inline mr-3" fill="currentColor" viewBox="0 0 20 20"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd"
+                                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                                        clip-rule="evenodd"></path>
+                                                </svg>
+                                                <div>
+                                                    <span class="font-medium">{{ $message }}</span> !
+                                                </div>
+                                            </div>
+                                        @enderror
                                         <label
                                             class="uppercase text-sm font-bold opacity-70
                                              text-slate-600">
-                                             File
+                                            File
                                         </label>
-                                        <input type="file"
-                                            name="file"
+                                        <input type="file" name="file"
                                             class="p-3 mt-2 mb-4 w-full bg-slate-200 
                                             rounded border-2 text-slate-950 border-slate-200 
                                             focus:border-slate-600 focus:outline-none">
