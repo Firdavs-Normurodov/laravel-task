@@ -5,18 +5,18 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-12 flex items-center">
+        <div class="max-w-8xl w-full mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
+                <div class="p-6 text-gray-900 dark:text-gray-100 ">
                     @if (auth()->user()->role->name == 'manager')
                         <!-- This is an example component -->
-                        <h2 class=" text-blue-500 font-bold text-xl">Received Applications</h2>
-                        <div class=' mt-8'>
+                        <div class=' mt-8  flex flex-col justify-center items-center '>
+                            <h2 class=" text-blue-500 font-bold text-xl text-left">Received Applications</h2>
                             @foreach ($applications as $application)
-                                <div class="rounded-xl border p-5 mt-6 shadow-md w-9/12 bg-white">
-                                    <div class="flex w-full items-center justify-between border-b pb-3">
-                                        <div class="flex items-center space-x-3">
+                                <div class="rounded-xl border     p-5 mt-6 shadow-md w-9/12  bg-white">
+                                    <div class="lg:flex w-full items-center justify-between border-b pb-3 ">
+                                        <div class="flex mt-2 ml-2 items-center space-x-3">
                                             <div
                                                 class="h-8 w-8 rounded-full bg-blue-400 flex justify-center items-center">
                                                 {{ $application->user->name[0] }}
@@ -24,7 +24,7 @@
                                             <div class="text-lg font-bold text-slate-700">{{ $application->user->name }}
                                             </div>
                                         </div>
-                                        <div class="flex items-center space-x-8">
+                                        <div class="flex mt-2 ml-2 items-center space-x-8">
                                             <button
                                                 class="rounded-2xl border bg-neutral-100 
                                             px-3 py-1 text-xs text-neutral-600 font-semibold">
@@ -33,43 +33,65 @@
                                             <div class="text-xs text-neutral-500">{{ $application->created_at }}</div>
                                         </div>
                                     </div>
+                                    <div class="lg:flex justify-between items-center">
+                                        <div class="box-border p-11 ">
+                                            <div class="mt-4 mb-3">
+                                                <div class="mb-3 text-xl text-slate-600  font-bold">
+                                                    {{ $application->subject }}
+                                                </div>
+                                                <div class="text-sm text-neutral-600">
+                                                    {{ $application->message }}
+                                                </div>
+                                            </div>
 
-                                    <div class="mt-4 mb-3">
-                                        <div class="mb-3 text-xl text-slate-600  font-bold">
-                                            {{ $application->subject }}
+                                            <div>
+                                                <div class="flex items-center justify-between text-slate-500">
+                                                    {{ $application->user->email }}
+
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="text-sm text-neutral-600">
-                                            {{ $application->message }}
+                                        <div class=" flex flex-col justify-center items-center ">
+                                            <div class="cursor-pointer box-border p-6">
+                                                @if (is_null($application->file_url))
+                                                    <div
+                                                        class="flex flex-col items-center m-6 p-6
+                                                        transition text-red-500 justify-center border border-red-500 rounded 
+                                                         hover:bg-red-100">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                            class="size-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                                                        </svg>
+                                                        {{-- <span class="text-xs p-0 m-0">No file</span> --}}
+                                                    </div>
+                                                @else
+                                                    <a class="flex flex-col items-center 
+                                                        border border-green-500 rounded  transition justify-center m-6 p-6
+                                                         text-green-500    hover:bg-green-100"
+                                                        href="{{ asset('storage/' . $application->file_url) }}"
+                                                        target="_blank">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                            class="size-6 ">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                                                        </svg>
+                                                    </a>
+                                                @endif
+
+
+                                            </div>
+                                            <div>
+                                                <a href="3" type="button"
+                                                    class="bg-green-500 text-white px-3 py-1 rounded font-medium text-sm mx-3 hover:bg-green-600 transition duration-200 each-in-out">
+                                                    Answer
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div>
-                                        <div class="flex items-center justify-between text-slate-500">
-                                            {{ $application->user->email }}
-                                            {{-- <div class="flex space-x-4 md:space-x-8">
-                                            <div
-                                                class="flex cursor-pointer items-center transition hover:text-slate-600">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="mr-1.5 h-5 w-5"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                    stroke-width="2">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                                                </svg>
-                                                <span>125</span>
-                                            </div>
-                                            <div
-                                                class="flex cursor-pointer items-center transition hover:text-slate-600">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="mr-1.5 h-5 w-5"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                    stroke-width="2">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-                                                </svg>
-                                                <span>4</span>
-                                            </div>
-                                        </div> --}}
-                                        </div>
-                                    </div>
                                 </div>
                             @endforeach()
                             <div class=" mt-5">
