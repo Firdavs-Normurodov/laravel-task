@@ -33,8 +33,8 @@
                                             <div class="text-xs text-neutral-500">{{ $application->created_at }}</div>
                                         </div>
                                     </div>
-                                    <div class="lg:flex justify-between items-center">
-                                        <div class="box-border p-11 ">
+                                    <div class="lg:flex justify-between items-center ">
+                                        <div class="box-border p-8 ">
                                             <div class="mt-4 mb-3">
                                                 <div class="mb-3 text-xl text-slate-600  font-bold">
                                                     {{ $application->subject }}
@@ -64,7 +64,6 @@
                                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                                 d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
                                                         </svg>
-                                                        {{-- <span class="text-xs p-0 m-0">No file</span> --}}
                                                     </div>
                                                 @else
                                                     <a class="flex flex-col items-center 
@@ -81,23 +80,34 @@
                                                     </a>
                                                 @endif
 
-
-                                            </div>
-                                            <div>
-                                                <a href="3" type="button"
-                                                    class="bg-green-500 text-white px-3 py-1 rounded font-medium text-sm mx-3 hover:bg-green-600 transition duration-200 each-in-out">
-                                                    Answer
-                                                </a>
                                             </div>
                                         </div>
                                     </div>
-
+                                    <hr class="border">
+                                    <div class=" lg:flex lg:relative justify-between items-center box-border p-8 m-0 ">
+                                        @if ($application->answer()->exists())
+                                            <div class="text-sm text-neutral-600">
+                                                <h1 class="text-xs text-blue-900">Answer:</h1>
+                                                {{ $application->answer->body }}
+                                            </div>
+                                        @else
+                                            <div class="lg:absolute top-0 left-7">
+                                                <a href="{{ route('answers.create', ['application' => $application->id]) }}"
+                                                    type="button"
+                                                    class="bg-green-500 text-white px-3 py-1 rounded 
+                                                    font-medium text-sm mx-3 hover:bg-green-600 
+                                                    transition duration-200 each-in-out
+                                                    flex items-center justify-center">
+                                                    Answer
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
                             @endforeach()
                             <div class=" mt-5">
                                 {{ $applications->links() }}
                             </div>
-
                         </div>
                     @elseif (auth()->user()->role->name == 'client')
                         <!-- component -->
@@ -123,13 +133,6 @@
                                         enctype="multipart/form-data">
                                         @csrf
 
-                                        {{-- @if ($errors->any())
-                                            <ul class="mb-4 text-sm text-red-600">
-                                                @foreach ($errors->all() as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                            </ul>
-                                        @endif --}}
                                         <h2 class="text-2xl font-bold text-slate-600">Submit your application</h2>
 
                                         <hr class="my-6">
@@ -200,8 +203,8 @@
                                             focus:border-slate-600 focus:outline-none">
 
                                         <input type="submit"
-                                            class="py-3 px-6 my-2 bg-emerald-500 
-                                            text-white font-medium rounded hover:bg-indigo-500 
+                                            class="py-2 px-6 my-2 bg-green-500
+                                            text-white font-medium rounded 
                                             cursor-pointer ease-in-out duration-300"
                                             value="Send">
                                     </form>
