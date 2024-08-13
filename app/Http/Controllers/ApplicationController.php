@@ -11,6 +11,13 @@ use Illuminate\Http\Request;
 
 class ApplicationController extends Controller
 {
+
+    public function index()
+    {
+        return view('applications.index')->with([
+            'applications' => auth()->user()->applications()->latest()->paginate(10),
+        ]);
+    }
     public function store(StoreApplicationRequest $request)
     {
 
